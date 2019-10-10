@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/victor/git/ros_sandbox/catkin_ws/devel/setup.sh

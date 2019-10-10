@@ -1,0 +1,10 @@
+<launch>
+
+    <!-- <include file="$(find farmaidbot)/launch/camera_rect.launch"/> -->
+    <include file="$(find farmaidbot)/launch/tag_detection.launch"/>
+    
+    <node pkg="farmaidbot" type="robot_control.py" name="apriltag_navigation" output="screen">
+        <param name="param_path" value="$(find farmaidbot)/parameters/nav_params.yaml"/>
+    </node>
+
+</launch>

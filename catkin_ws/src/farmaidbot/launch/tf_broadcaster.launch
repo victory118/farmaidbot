@@ -1,0 +1,12 @@
+<launch>
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.1 0 0.455 0 0 0 base_link camera_link 100"/> -->
+
+    <include file="$(find farmaidbot)/launch/camera_rect.launch"/>
+    <include file="$(find farmaidbot)/launch/tag_detection.launch"/>
+
+    <node pkg="farmaidbot" type="tf_broadcaster.py" name="tf_broadcaster" output="screen">
+        <param name="param_path" value="$(find farmaidbot)/parameters/tag_info.yaml"/>
+    </node>
+
+  <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.1 0 0.455 0 0 0 world tag1 50"/> -->
+</launch>

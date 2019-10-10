@@ -1,0 +1,4 @@
+tag_poses:
+  0: [0.0, 2, 0.19, 0.7071068, 0, 0, 0.7071068] # along the y-axis facing the origin
+  1: [2, 0, 0.19, -0.5, 0.5, 0.5, -0.5] # along the x-axis facing the origin
+poselist_base2cam: [0.18, 0.0, 0.2, 0.5, -0.5, 0.5, -0.5]
