@@ -13,6 +13,7 @@ import tf2_ros
 import time
 from geometry_msgs.msg import Pose, Quaternion, Twist, Pose2D, TransformStamped
 from nav_msgs.msg import Odometry
+from farmaidbot.msg import WheelAngle
 
 import helper
 
@@ -29,6 +30,9 @@ class BaseController:
         # Wheel angles in radians
         self._wheel_angle_left = 0
         self._wheel_angle_right = 0
+
+        # Initialize wheel angle publisher
+        self._wheel_angle_pub = rospy.Publisher("/wheel_angle", WheelAngle, queue_size=1)
 
         # Initialize cmd_vel subscriber
         rospy.Subscriber("cmd_vel", Twist, self.cmd_vel_callback)
@@ -73,6 +77,12 @@ class BaseController:
                     self._wheel_angle_right = wheel_angle_right
                     
                     self._pose2D = pose # update pose
+
+                    # Publish the wheel angle message
+                    wheel_angle_msg = WheelAngle() # create the message
+                    wheel_angle_msg.left = wheel_angle_left
+                    wheel_angle_msg.right = wheel_angle_right
+                    self._wheel_angle_pub.publish(wheel_angle_msg)
                     
                 except:
                     # print out msg if there is an error parsing a serial msg
