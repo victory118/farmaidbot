@@ -4,7 +4,7 @@ import numpy as np
 import tf.transformations as tfm
 
 from visualization_msgs.msg import Marker
-from geometry_msgs.msg import Point, Pose, PoseStamped
+from geometry_msgs.msg import Point, Pose, PoseStamped, Transform
 import helper
 
 nTfRetry = 1
@@ -23,6 +23,9 @@ def poselist2pose(poselist):
 
 def pose2poselist(pose):
     return [pose.position.x, pose.position.y, pose.position.z, pose.orientation.x, pose.orientation.y, pose.orientation.z, pose.orientation.w]
+
+def transform2poselist(transform):
+    return [transform.translation.x, transform.translation.y, transform.translation.z, transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w]
 
 def invPoselist(poselist):
     return xyzquat_from_matrix(np.linalg.inv(matrix_from_xyzquat(poselist)))
