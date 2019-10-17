@@ -26,7 +26,8 @@
     <!-- <remap from="image_rect" to="/usb_cam/image_raw"/> -->
 
     <!-- image_rect is in black and white; not sure which one is better to send to april tag detector> -->
-    <remap from="image_rect" to="/usb_cam/image_rect"/>
+    <!-- <remap from="image_rect" to="/usb_cam/image_rect"/> -->
+    <remap from="image_rect" to="/raspicam_node/image"/>
   </node>
 
   <!-- <node pkg="tf" type="static_transform_publisher" name="base_to_laser" args="0.1 0 0.455 0 0 0 base_link camera_link 100"/> -->

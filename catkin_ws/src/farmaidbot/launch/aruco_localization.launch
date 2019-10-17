@@ -1,0 +1,10 @@
+<launch>
+
+    <!-- <include file="$(find farmaidbot)/launch/camera_rect.launch"/> -->
+    <!-- <include file="$(find farmaidbot)/launch/tag_detection.launch"/> -->
+
+    <node pkg="farmaidbot" type="aruco_localization.py" name="aruco_localization" output="screen">
+        <param name="param_path" value="$(find farmaidbot)/parameters/aruco_params.yaml"/>
+    </node>
+
+</launch>

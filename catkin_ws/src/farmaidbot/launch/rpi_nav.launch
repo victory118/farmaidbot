@@ -1,0 +1,8 @@
+<launch>
+
+    <include file="$(find farmaidbot)/launch/camera_rect.launch"/>
+
+    <node pkg="farmaidbot" type="base_controller.py" name="base_controller" output="screen">
+    </node>
+
+</launch>

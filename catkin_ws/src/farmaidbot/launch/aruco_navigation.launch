@@ -1,0 +1,7 @@
+<launch>
+    
+    <node pkg="farmaidbot" type="aruco_navigation.py" name="aruco_navigation" output="screen">
+        <param name="param_path" value="$(find farmaidbot)/parameters/aruco_nav_params.yaml"/>
+    </node>
+
+</launch>

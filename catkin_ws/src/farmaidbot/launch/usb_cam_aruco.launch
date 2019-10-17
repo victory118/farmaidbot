@@ -1,0 +1,17 @@
+<launch>
+  <arg name="camera" default="usb_cam"/>
+  <arg name="image" default="image_rect"/>
+
+  <include file="$(find farmaidbot)/launch/camera_rect.launch"/>
+  <include file="$(find aruco_detect)/launch/aruco_detect.launch">
+    <arg name="camera" value="$(arg camera)"/>
+    <arg name="image" value="$(arg image)"/>
+  </include>
+
+  <node pkg="farmaidbot" type="base_controller.py" name="base_controller" output="screen">
+    </node>
+
+  <!-- <node pkg="tf2_ros" type="static_transform_publisher" name="camera_base"
+    args="0.105 0.0 0.155 0.0 0.0 -1.5707963 base_link usb_cam"/> -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="tag1_broadcaster" args="1 0 $-->
+</launch>
