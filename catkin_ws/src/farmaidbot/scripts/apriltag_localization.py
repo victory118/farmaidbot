@@ -8,7 +8,8 @@ import numpy as np
 import threading
 import tf
 import tf2_ros
-import geometry_msgs.msg
+# import geometry_msgs.msg
+from geometry_msgs.msg import Pose, PoseArray
 from helper import pubFrame, pose2poselist, pubFrame, transformPose, invPoselist, lookupTransform
 
 from apriltags_ros.msg import (
@@ -27,6 +28,9 @@ class AprilTagLocalization:
 
         # Initialize subscriber to Apriltag detections
         rospy.Subscriber("/camera/tag_detections", AprilTagDetectionArray, self.callback)
+
+        # Initialize PoseArray message with pose estimations
+        self._tag_pose_pub = rospy.Publisher("tag_pose_array", PoseArray, queue_size=1)
 
         # AprilTag map: dictionary of tag poses in the map frame as a list
         self._tag_poses = tag_poses # dictionary with tag_id: [x, y, z, qx, qy, qz, qw]
@@ -56,13 +60,17 @@ class AprilTagLocalization:
         in map frame.
         """
         with self._lock:
+            pose_array_msg = PoseArray()
+
             # Camera frame to tag frame(s)
             if (len(pose_array.detections)==0):
                 self._pose_detections = None
+                self._tag_pose_pub.publish(pose_array_msg)
                 return
 
             pose_detections = np.zeros((len(pose_array.detections),3))
             for i in range(len(pose_array.detections)):
+                pose_msg = Pose()
                 tag_id = pose_array.detections[i].id
 
                 pose_cam2tag = pose_array.detections[i].pose.pose
@@ -77,6 +85,16 @@ class AprilTagLocalization:
                 robot_yaw = tf.transformations.euler_from_quaternion(robot_pose3d[3:7])[2]
                 robot_pose2d = robot_position2d + [robot_yaw]
                 pose_detections[i] = np.array(robot_pose2d)
+
+                pose_msg.position.x = robot_pose3d[0]
+                pose_msg.position.y = robot_pose3d[1]
+                pose_msg.orientation.x = robot_pose3d[3]
+                pose_msg.orientation.y = robot_pose3d[4]
+                pose_msg.orientation.z = robot_pose3d[5]
+                pose_msg.orientation.w = robot_pose3d[6]
+                pose_array_msg.poses.append(pose_msg)
+            
+            self._tag_pose_pub.publish(pose_array_msg)
             self._pose_detections = pose_detections
 
     def get_measurement(self):
